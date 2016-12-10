@@ -1,6 +1,6 @@
 #Replica program performing the task of the proxy to handel the connection and to store it in a key value database pickel DB
 
-import sys, socket, subprocess, pickledb, threading, time
+import sys, socket, subprocess, pickledb, threading, time 
 
 #global counter 
 #counter = 0
@@ -33,6 +33,13 @@ def get_func(key):                                                          #Fun
         success_set = "failure not able to get the key and value"
         print (success_set)
         return (success_set)
+
+def log_timer(t):
+    print('This window will remain open for 3 more seconds...')
+    while t >= 0:
+    time.sleep(1)
+    t -= 1
+    print('\n \n \n \n \n Logger Alarm, time to send update to all! \n \n \n \n \n')
 
 def replicate_func(socket):
     conn1, addr1 = socket.accept()
@@ -74,7 +81,7 @@ host = ''
 r1 = pickledb.load("replica", False)
 port1 = int (sys.argv[1])
 
-if  (port1 == 17201):
+if  (port1 == 17201):                                                #Connecting to different Replicas.
         p1 = 17302
         p2 = 17402
         p3 = 17502
@@ -134,7 +141,7 @@ print("Started on port: %d"% (port1 + 3))
 #thread.start()
 #print("Started on port: %d"%(port1 + 4))
 
-time.sleep (20) 
+time.sleep (20)                                                       #Allowing all the replicas to be up before the clients start to send data... 
 
 conn_send_1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 conn_send_1.connect(('localhost',p1))
@@ -162,8 +169,9 @@ data_1 = { }
 time_1 = { }
 BUFSIZE = 1024
 conn, addr = s.accept()                                              # Accept connection from the client
-write = 0
+writes= 0
 counter = 0
+#write_dict= { }
 while True:
     print 'New connection from %s:%d' % (addr[0], addr[1])
     data = conn.recv(BUFSIZE)
@@ -198,18 +206,28 @@ while True:
             print ("Debug: printing dict value: ")
             print data_1
             print time_1
-            write = write +1
-            counter = counter + 1
+            writes= writes +1
+            #counter = counter + 1
             success = set_func(key, value, time_id)                       #Keeping track of time for future work
             print "Sending data to replica 1"
-            counter = counter + 1
+            #counter = counter + 1
             send_all(conn_send_1, data)
             print "Sending data to replica 2"
-            counter = counter + 1
+            #counter = counter + 1
             send_all(conn_send_2, data)
             print "Sending data to replica 3"
-            counter = counter + 1
+           # counter = counter + 1
             send_all(conn_send_3, data)
+            if ((writes == 1)):
+               # write_dict[writes] = counter
+                f1=open('./number_of_writes', 'a')
+                out_put = str(writes) + ","            #+ str(counter)
+                f1.write(out_put)
+                writes =0
+    #            f1.write(write_dict)
+
+
+            print ("Vaue of counter is: Total Number of COUNTS:%d" %(counter))
 #            print "Sending data to replica 4"
 #            send_all(conn_send_4, data)
 
@@ -239,5 +257,9 @@ thread.join()
 
 def quit(conn):
     conn.close()
+    conn_send_1.close()
+    conn_send_2.close()
+    conn_send_3.close()
+
     quit(conn)
 

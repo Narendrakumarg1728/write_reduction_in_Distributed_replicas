@@ -4,6 +4,7 @@ import sys, socket, time, random
 
 port = int (sys.argv[1])
 BUFSIZE = 1024
+write_counter =0
 conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 conn.connect(('localhost',port))
 while True:
@@ -25,6 +26,14 @@ while True:
     cmd = cmd + " " + time_id
     print cmd
     conn.send(cmd)
+    write_counter = 1
+    if ((write_counter == 1)):
+               # write_dict[writes] = counter
+        f1=open('./writes_from_client.csv', 'a')
+        out_put = str(write_counter) + ","            #+ str(counter)
+        f1.write(out_put)
+        writes =0
+
     data = conn.recv(BUFSIZE)
 
     msglen = len(data)
