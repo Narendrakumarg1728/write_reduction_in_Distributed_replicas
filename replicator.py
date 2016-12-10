@@ -34,12 +34,17 @@ def get_func(key):                                                          #Fun
         print (success_set)
         return (success_set)
 
-def log_timer(t):
-    print('This window will remain open for 3 more seconds...')
-    while t >= 0:
-    time.sleep(1)
-    t -= 1
+def log_timer_func(t):
+    global time_out 
+    while true:
+        print('Timer running in back ground')
+        while (t >= 0 and time_out == 1):
+            time.sleep(1)
+            t -= 1
     print('\n \n \n \n \n Logger Alarm, time to send update to all! \n \n \n \n \n')
+    time_out = 0
+
+
 
 def replicate_func(socket):
     conn1, addr1 = socket.accept()
@@ -80,6 +85,8 @@ def send_all(con_send, data_send):
 host = ''
 r1 = pickledb.load("replica", False)
 port1 = int (sys.argv[1])
+mode = sys.argv[2]
+
 
 if  (port1 == 17201):                                                #Connecting to different Replicas.
         p1 = 17302
@@ -171,6 +178,15 @@ BUFSIZE = 1024
 conn, addr = s.accept()                                              # Accept connection from the client
 writes= 0
 counter = 0
+log_copy_dict = { }                                                    #Log for local replica used to flush data to all the replicas when running in lazy mode
+global time_out 
+time_out = 60
+
+if mode == 'lazy_updat':
+    thread = threading.Thread(target = log_timer_func, args = (time_out, ))
+    thread.start()
+    print("Started timer function for logger\n")
+
 #write_dict= { }
 while True:
     print 'New connection from %s:%d' % (addr[0], addr[1])
@@ -206,18 +222,41 @@ while True:
             print ("Debug: printing dict value: ")
             print data_1
             print time_1
-            writes= writes +1
-            #counter = counter + 1
-            success = set_func(key, value, time_id)                       #Keeping track of time for future work
-            print "Sending data to replica 1"
-            #counter = counter + 1
-            send_all(conn_send_1, data)
-            print "Sending data to replica 2"
-            #counter = counter + 1
-            send_all(conn_send_2, data)
-            print "Sending data to replica 3"
-           # counter = counter + 1
-            send_all(conn_send_3, data)
+            writes= writes +1                                             #Number of writes so far at this replica
+
+
+            if (mode == 'strong' ):                                  
+                #counter = counter + 1
+                success = set_func(key, value, time_id)                       #Keeping track of time for future work
+                print "Sending data to replica 1"
+                #counter = counter + 1
+                send_all(conn_send_1, data)
+                print "Sending data to replica 2"
+                #counter = counter + 1
+                send_all(conn_send_2, data)
+                print "Sending data to replica 3"
+                # counter = counter + 1
+                send_all(conn_send_3, data)
+               
+            elif ( mode == 'lazy_update'):                                     #In lazy update mode logging to local dict and then if only time out by a thread running in background send to all
+                log_copy_dict[key] = value
+                if timer == 0:
+                    print ("Log time out, time to send to all replicas\n")
+                    time_id =  str (int (time.time()) )
+                    for k,v in log_copy_dict:
+                        data = k + v + str(time_id)
+                        print "Sending data to replica 1"
+                        #counter = counter + 1
+                        send_all(conn_send_1, data)
+                        print "Sending data to replica 2"
+                        #counter = counter + 1
+                        send_all(conn_send_2, data)
+                        print "Sending data to replica 3"
+                        # counter = counter + 1
+                        send_all(conn_send_3, data)
+
+                    timer == 1
+
             if ((writes == 1)):
                # write_dict[writes] = counter
                 f1=open('./number_of_writes', 'a')
@@ -227,7 +266,7 @@ while True:
     #            f1.write(write_dict)
 
 
-            print ("Vaue of counter is: Total Number of COUNTS:%d" %(counter))
+#            print ("Vaue of counter is: Total Number of COUNTS:%d" %(counter))
 #            print "Sending data to replica 4"
 #            send_all(conn_send_4, data)
 
