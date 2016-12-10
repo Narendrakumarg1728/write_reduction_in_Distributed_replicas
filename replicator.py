@@ -16,6 +16,14 @@ def set_func(key, value, time_id):                                          #Fun
     try:
         success_set =  r1.set(key, value)
         print ("Debug: Value of the return of set: %s" %(success_set))
+        writes = 1
+        if ((writes == 1)):
+         # write_dict[writes] = counter
+            f1=open('./number_of_writes', 'a')
+            out_put = str(writes) + ","            #+ str(counter)
+            f1.write(out_put)
+            f1.close
+            writes =0
         return (success_set)
     except:
         success_set = "failure not able to set the key and value"
@@ -36,13 +44,13 @@ def get_func(key):                                                          #Fun
 
 def log_timer_func(t):
     global time_out 
-    while true:
-        print('Timer running in back ground')
+    while True:
+#        print('Timer running in back ground')
         while (t >= 0 and time_out == 1):
             time.sleep(1)
             t -= 1
-    print('\n \n \n \n \n Logger Alarm, time to send update to all! \n \n \n \n \n')
-    time_out = 0
+#        print('\n \n \n \n \n Logger Alarm, time to send update to all! \n \n \n \n \n')
+        time_out = 0
 
 
 
@@ -69,12 +77,12 @@ def replicate_func(socket):
             key = command[1]
             value = command[2]
             time_id = command[3]
-            data_1 [key] = value
-            time_1 [key] = time_id
+            #data_1 [key] = value
+            #time_1 [key] = time_id
             #update = 1
-            print ("Debug: printing dict value: ")
-            print data_1
-            print time_1
+           # print ("Debug: printing dict value: ")
+           # print data_1
+           # print time_1
             success = set_func(key, value, time_id)
             print ("%s", success)
 
@@ -86,6 +94,8 @@ host = ''
 r1 = pickledb.load("replica", False)
 port1 = int (sys.argv[1])
 mode = sys.argv[2]
+print ("\nPort provided is: %d\n" % port1)
+print ("\nMode provided is: %s\n" % mode)
 
 
 if  (port1 == 17201):                                                #Connecting to different Replicas.
@@ -180,10 +190,11 @@ writes= 0
 counter = 0
 log_copy_dict = { }                                                    #Log for local replica used to flush data to all the replicas when running in lazy mode
 global time_out 
-time_out = 60
+timer = 60
+time_out = 1
 
-if mode == 'lazy_updat':
-    thread = threading.Thread(target = log_timer_func, args = (time_out, ))
+if mode == 'lazy_update':
+    thread = threading.Thread(target = log_timer_func, args = (timer, ))
     thread.start()
     print("Started timer function for logger\n")
 
@@ -211,8 +222,8 @@ while True:
             key = command[1]
             value = command[2]
             time_id = command[3]
-            data_1 [key] = value
-            time_1 [key] = time_id
+            #data_1 [key] = value
+            #time_1 [key] = time_id
 #            c.acquire()
 #            if  update == 0:
             key_share = key
@@ -220,14 +231,14 @@ while True:
             time_share = int (time_id)
             print ("Debug: Value of Key, value, time in shared variable: %s, %s, %d" % (key_share, value_share, time_share))
             print ("Debug: printing dict value: ")
-            print data_1
-            print time_1
+            #print data_1
+            #print time_1
             writes= writes +1                                             #Number of writes so far at this replica
 
+            success = set_func(key, value, time_id)                       #Keeping in local DB and keeping track of time for future work
 
             if (mode == 'strong' ):                                  
                 #counter = counter + 1
-                success = set_func(key, value, time_id)                       #Keeping track of time for future work
                 print "Sending data to replica 1"
                 #counter = counter + 1
                 send_all(conn_send_1, data)
@@ -240,11 +251,12 @@ while True:
                
             elif ( mode == 'lazy_update'):                                     #In lazy update mode logging to local dict and then if only time out by a thread running in background send to all
                 log_copy_dict[key] = value
-                if timer == 0:
+                print ("Debug: time_out value: %d" % time_out)
+                if time_out == 0:
                     print ("Log time out, time to send to all replicas\n")
                     time_id =  str (int (time.time()) )
-                    for k,v in log_copy_dict:
-                        data = k + v + str(time_id)
+                    for k,v in log_copy_dict.iteritems():
+                        data = "set " + k + " " + v + " " + str(time_id)
                         print "Sending data to replica 1"
                         #counter = counter + 1
                         send_all(conn_send_1, data)
@@ -255,14 +267,15 @@ while True:
                         # counter = counter + 1
                         send_all(conn_send_3, data)
 
-                    timer == 1
+                    time_out == 1
 
-            if ((writes == 1)):
+       #     if ((writes == 1)):
                # write_dict[writes] = counter
-                f1=open('./number_of_writes', 'a')
-                out_put = str(writes) + ","            #+ str(counter)
-                f1.write(out_put)
-                writes =0
+        #        f1=open('./number_of_writes', 'a')
+         #       out_put = str(writes) + ","            #+ str(counter)
+          #      f1.write(out_put)
+           #     f1.close
+            #    writes =0
     #            f1.write(write_dict)
 
 
@@ -289,6 +302,7 @@ while True:
             print out_put1
             conn.send(out_put1)
 
+thread.join()
 thread.join()
 thread.join()
 thread.join()

@@ -20,6 +20,7 @@ while True:
         value = key * 1000
 
     cmd = "set "  + str(key) + " " + str(value)
+    time.sleep(2)
     print cmd
     time_id =  str (int (time.time()) )
     print time_id
