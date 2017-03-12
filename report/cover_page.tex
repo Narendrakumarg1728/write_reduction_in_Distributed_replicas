@@ -1,0 +1,54 @@
+%% uctest.tex 11/3/94
+%% Copyright (C) 1988-2004 Daniel Gildea, BBF, Ethan Munson.
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2003/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+% 
+% The Current Maintainer of this work is Daniel Gildea.
+
+\documentclass[11pt]{cover_page}
+\def\dsp{\def\baselinestretch{2.0}\large\normalsize}
+\dsp
+\begin{document}
+
+% Declarations for Front Matter
+
+\title{Replica Coordinative Lifetime Enhancement of Flash Storage in Distributed Systems}
+\author{Narendra Kumar Govinda Raju}
+\degreeyear{2017}
+\degreemonth{March}
+\degree{MASTER OF SCIENCE}
+\chair{Professor Jishen Zhao}
+\committeememberone{Professor Jose Renau}
+\numberofmembers{1} %% (including chair) possible: 3, 4, 5, 6
+\field{Computer Engineering}
+\campus{Santa Cruz}
+\deanlineone{Tyrus Miller}
+\deanlinetwo{Vice Provost and Dean of Graduate Studies}
+\deanlinethree{}
+\begin{frontmatter}
+
+\maketitle
+
+\begin{abstract}
+NAND Flash memories are replacing the traditional storage systems like the magnetic and optical mediums, due to their better performance during read and write. However, the major drawback with the flash systems is that they have a very low endurance. The lifetime of the flash memory is less compared to the magnetic medium. It is limited due to the fact that they wear out after few thousands of program-erase (PE) cycles. The magnetic or optical drives support  $10^\textsuperscript{12}$ - $10^\textsuperscript{14}$  write cycles whereas flash system support just $10^\textsuperscript{5}$ - $10^\textsuperscript{7}$ write cycles. Hence the flash systems are not suitable for write intensive applications. \\\\ 
+In this paper, we propose a new solution to reduce the number of writes in flash systems which increases the endurance, thereby increasing their lifetime. On the event of a write, the immediate writes on few of the replicas is delayed and batched at a later stage as a lazy update or through logging. \\\\ This solution can be implemented for a direct attached storage system having mirrored data using RAID technology or it can be implemented on a disaster recovery system having the mirrored data across multiple sites. For simplicity and ease of implementation for this project we are creating a simple key-value data store and replicating it across multiple sites to mimic disaster recovery solution. \\\\
+This solution can be deployed on a weak consistent system running write intensive applications. Also in distributed systems, all applications do not have to run as strongly consistent always. Depending on the needs whenever the application does not need strong consistency, our solution could be enabled to increase the system`s endurance. This makes the flash systems usable even for work intensive applications as their endurance is increased. 
+
+\end{abstract}
+
+\begin{acknowledgements}
+First of all, I would like to express my sincere thanks to Professor Jishen Zhao for letting me work on this project and for all her support and ideas throughout the project.\\\\
+
+\end{acknowledgements}
+
+\end{frontmatter}
+
+\end{document}

@@ -1,0 +1,15 @@
+\chapter{Improvements}
+%The main idea of this project is to build a software to support reduction of the data writes on a flash drives by writing the data only on few of the copies if the same copy exixtis in multiple places. To illustrate this as a proof of concept  we have choosen the distributed system scenario where we have multiple copies of same data in multiple disaster recovery sites. 
+The main idea of the project was to explore memory and storage coordinative ECC and wear leveling schemes across memory and storage components to implement a solution where the number of writes on the disk can be reduced as we have the same data on the RAM. 
+
+This requires access to SSD firmware and the OS driver which are proprietary softwares. It is difficult to get access and requires high technical knowledge to understand and implement the firmware code which also requires lots of time effort. 
+
+Our project is the proof of concept to show that we can have write reduction and this should be extended to support for the SSD drives in the future.
+
+\textbf{Other features which can be extended for this project are:}
+\begin{itemize}
+    \item Support general data bases like SQL DB.
+    \item Use data from real scenario for data generation.
+    \item Integrate IO-meter as the data generator. 
+\end{itemize}
+\newpage

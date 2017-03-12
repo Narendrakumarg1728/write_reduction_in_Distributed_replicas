@@ -1,0 +1,19 @@
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {1.1}{\ignorespaces Quantum Tunneling \textsuperscript {[12]}\relax }}{2}{figure.caption.11}
+\contentsline {figure}{\numberline {1.2}{\ignorespaces Hot Electrons Injection\textsuperscript {[13]}\relax }}{3}{figure.caption.12}
+\contentsline {figure}{\numberline {1.3}{\ignorespaces Python version\relax }}{5}{figure.caption.15}
+\contentsline {figure}{\numberline {1.4}{\ignorespaces tox-quickstart\relax }}{6}{figure.caption.17}
+\contentsline {figure}{\numberline {1.5}{\ignorespaces pytest for testing and debugging\relax }}{6}{figure.caption.19}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Simple key, value pair Distributed System without our solution\relax }}{8}{figure.caption.24}
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Key, Value pair distributed system with lazy update on Replica 4\relax }}{9}{figure.caption.25}
+\contentsline {figure}{\numberline {2.3}{\ignorespaces Key, Value distributed system with logging for write events\relax }}{10}{figure.caption.26}
+\contentsline {figure}{\numberline {2.4}{\ignorespaces File Structure\relax }}{11}{figure.caption.28}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Theoretical estimate for simple key, value pair distributed system without our solution.\relax }}{15}{figure.caption.62}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Theoretical estimate for simple key, value pair distributed system with our solution of logging.\relax }}{15}{figure.caption.63}
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Practical results: Total number of writes from all the clients against the total number of key value updates across replicas without our solution.\relax }}{17}{figure.caption.65}
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Practical results: Total number of writes from all clients against the total number of key value updates across replicas using the logging solution.\relax }}{17}{figure.caption.66}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Testing and Debugging in pytest\relax }}{19}{figure.caption.74}
+\addvspace {10\p@ }
